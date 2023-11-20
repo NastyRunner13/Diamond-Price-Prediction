@@ -7,8 +7,9 @@ from sklearn.neighbors import KNeighborsRegressor
 
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import dataclass
+from dataclasses import dataclass
 from src.utils import evaluate_model
+from src.utils import save_object
 
 import os
 import sys
@@ -20,7 +21,7 @@ class ModelTrainerConfig:
 
 
 class ModelTrainer:
-    def __inti__(self):
+    def __init__(self):
         self.model_trainer_config = ModelTrainerConfig()
 
     def initiate_model_training(self, train_arr, test_arr):
@@ -47,6 +48,32 @@ class ModelTrainer:
 
             print("\n==============================================")
             logging.info(f"Model Report : {model_report}")
+
+            # Initialize variables to store the model with the highest F1-score and its value
+            max_accuracy_model = None
+            max_accuracy_score = 0
+
+            # Iterate through the models in the report dictionary
+            for model, metrics in model_report.items():
+                accuracy = metrics["Accuracy"]
+
+                # Update if the current model has a higher F1-score
+                if accuracy > max_accuracy_score:
+                    max_accuracy_score = accuracy
+                    max_accuracy_model = model
+
+            print(
+                f"Best Model Found, Model Name : {max_accuracy_model}, Accuracy Score : {max_accuracy_score}"
+            )
+            print("\n==============================================")
+            logging.info(
+                f"Best Model Found, Model Name : {max_accuracy_model}, Accuracy Score : {max_accuracy_score}"
+            )
+
+            save_object(
+                file_path=self.model_trainer_config.trainer_model_file_path,
+                obj=max_accuracy_model,
+            )
 
         except Exception as e:
             raise CustomException(e, sys)
