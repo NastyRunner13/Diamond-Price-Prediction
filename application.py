@@ -30,8 +30,8 @@ def predict_datapoint():
         )
 
         final_new_data = data.get_data_as_dataframe()
-        predict_datapoint = PredictPipeline()
-        pred = predict_datapoint.predict(final_new_data)
+        predict_pipeline = PredictPipeline()
+        pred = predict_pipeline.predict(final_new_data)
 
         results = round(pred[0], 2)
 
