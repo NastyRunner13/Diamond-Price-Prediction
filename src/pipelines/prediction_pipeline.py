@@ -18,7 +18,7 @@ class PredictPipeline:
             preprocessor = load_object(preprocessor_path)
             model = load_object(model_path)
 
-            data_scaled = preprocessor.fit_transform(features)
+            data_scaled = preprocessor.transform(features)
 
             pred = model.predict(data_scaled)
 
@@ -50,7 +50,7 @@ class CustomData:
         self.z = z
         self.cut = cut
         self.color = color
-        self.clartity = clarity
+        self.clarity = clarity
 
     def get_data_as_dataframe(self):
         try:
@@ -63,7 +63,7 @@ class CustomData:
                 "z": [self.z],
                 "cut": [self.cut],
                 "color": [self.color],
-                "clartity": [self.clartity],
+                "clarity": [self.clarity],
             }
             df = pd.DataFrame(custom_data_input_dict)
             logging.info("DataFrame Gathered")

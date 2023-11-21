@@ -44,35 +44,32 @@ class ModelTrainer:
                 "KNeighbors": KNeighborsRegressor(),
             }
 
-            model_report = evaluate_model(X_train, y_train, X_test, y_test, models)
+            model_report: dict = evaluate_model(
+                X_train, y_train, X_test, y_test, models
+            )
 
             print("\n==============================================")
             logging.info(f"Model Report : {model_report}")
 
-            # Initialize variables to store the model with the highest F1-score and its value
-            max_accuracy_model = None
-            max_accuracy_score = 0
+            best_model_score = max(sorted(model_report.values()))
 
-            # Iterate through the models in the report dictionary
-            for model, metrics in model_report.items():
-                accuracy = metrics["Accuracy"]
+            best_model_name = list(model_report.keys())[
+                list(model_report.values()).index(best_model_score)
+            ]
 
-                # Update if the current model has a higher F1-score
-                if accuracy > max_accuracy_score:
-                    max_accuracy_score = accuracy
-                    max_accuracy_model = model
+            best_model = models[best_model_name]
 
             print(
-                f"Best Model Found, Model Name : {max_accuracy_model}, Accuracy Score : {max_accuracy_score}"
+                f"Best Model Found, Model Name : {best_model_name}, Accuracy Score : {best_model_score}"
             )
             print("\n==============================================")
             logging.info(
-                f"Best Model Found, Model Name : {max_accuracy_model}, Accuracy Score : {max_accuracy_score}"
+                f"Best Model Found, Model Name : {best_model_name}, Accuracy Score : {best_model_score}"
             )
 
             save_object(
                 file_path=self.model_trainer_config.trainer_model_file_path,
-                obj=max_accuracy_model,
+                obj=best_model,
             )
 
         except Exception as e:
