@@ -39,14 +39,10 @@ def evaluate_model(X_train, y_train, X_test, y_test, models):
             # GET R2SCORE FOR TRAIN AND TEST DATA
             # train_model_score = r2_score(y_train, y_train_pred)
             test_model_score = r2_score(y_test, y_test_pred)
-            test_model_mae = mean_absolute_error(y_test, y_test_pred)
-            test_model_mse = mean_squared_error(y_test, y_test_pred)
+            # test_model_mae = mean_absolute_error(y_test, y_test_pred)
+            # test_model_mse = mean_squared_error(y_test, y_test_pred)
 
-            report[list(models.keys())[i]] = {
-                "Accuracy": test_model_score,
-                "Mean Absolute Error": test_model_mae,
-                "Mean Squared Error": test_model_mse,
-            }
+            report[list(models.keys())[i]] = test_model_score
 
         return report
 
